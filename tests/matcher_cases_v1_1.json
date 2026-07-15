@@ -1,0 +1,194 @@
+[
+  {
+    "name": "external_syslog",
+    "finding": {
+      "finding_name": "SYSLOG 외부 전송 후보"
+    },
+    "expected": "REC-ADM-008"
+  },
+  {
+    "name": "external_snmp_trap",
+    "finding": {
+      "finding_name": "SNMP 외부 Trap/관리 통신 후보"
+    },
+    "expected": "REC-ADM-006"
+  },
+  {
+    "name": "external_snmp_source",
+    "finding": {
+      "finding_name": "SNMP 검토 후보",
+      "source_zone": "EXTERNAL"
+    },
+    "expected": "REC-ADM-007"
+  },
+  {
+    "name": "smbv1",
+    "finding": {
+      "finding_name": "SMBv1/TCP445 통신 후보"
+    },
+    "expected": "REC-CRY-004"
+  },
+  {
+    "name": "telnet",
+    "finding": {
+      "protocol": "TELNET",
+      "destination_port": "23"
+    },
+    "expected": "REC-ADM-005"
+  },
+  {
+    "name": "tls10",
+    "finding": {
+      "finding_name": "TLS 1.0 사용 후보"
+    },
+    "expected": "REC-CRY-001"
+  },
+  {
+    "name": "tacacs",
+    "finding": {
+      "finding_name": "외부 TACACS 인증 통신 후보"
+    },
+    "expected": "REC-ADM-004"
+  },
+  {
+    "name": "vendor_discovery",
+    "finding": {
+      "protocol": "CAPWAP-CONTROL",
+      "destination_port": 5246
+    },
+    "expected": "REC-DISC-005"
+  },
+  {
+    "name": "plc_write",
+    "finding": {
+      "finding_name": "PLC Write 후보"
+    },
+    "expected": "REC-ICS-003"
+  },
+  {
+    "name": "ftp",
+    "finding": {
+      "protocol": "FTP",
+      "destination_port": 21
+    },
+    "expected": "REC-CRY-002"
+  },
+  {
+    "name": "snmp_legacy",
+    "finding": {
+      "finding_name": "SNMPv2c 사용 후보"
+    },
+    "expected": "REC-CRY-003"
+  },
+  {
+    "name": "external_destination",
+    "finding": {
+      "finding_name": "외부 목적지 통신 후보"
+    },
+    "expected": "REC-EXT-001"
+  },
+  {
+    "name": "wsd",
+    "finding": {
+      "protocol": "WS-Discovery",
+      "destination_port": 3702
+    },
+    "expected": "REC-DISC-002"
+  },
+  {
+    "name": "ssdp",
+    "finding": {
+      "protocol": "SSDP",
+      "destination_port": 1900
+    },
+    "expected": "REC-DISC-001"
+  },
+  {
+    "name": "mdns",
+    "finding": {
+      "protocol": "mDNS",
+      "destination_port": 5353
+    },
+    "expected": "REC-DISC-003"
+  },
+  {
+    "name": "dhcpv6",
+    "finding": {
+      "protocol": "DHCPv6",
+      "destination_port": 547
+    },
+    "expected": "REC-DISC-004"
+  },
+  {
+    "name": "modbus",
+    "finding": {
+      "protocol": "MODBUS/TCP",
+      "destination_port": 502
+    },
+    "expected": "REC-ICS-001"
+  },
+  {
+    "name": "s7",
+    "finding": {
+      "protocol": "S7COMM",
+      "destination_port": 102
+    },
+    "expected": "REC-ICS-002"
+  },
+  {
+    "name": "smb_share",
+    "finding": {
+      "finding_name": "Assets Accessed SMB shares 후보"
+    },
+    "expected": "REC-ADM-001"
+  },
+  {
+    "name": "remote_management",
+    "finding": {
+      "finding_name": "Clients remotely managed 후보"
+    },
+    "expected": "REC-ADM-002"
+  },
+  {
+    "name": "inbound_service",
+    "finding": {
+      "finding_name": "Syslog 인바운드 후보"
+    },
+    "expected": "REC-ADM-003"
+  },
+  {
+    "name": "highly_connected",
+    "finding": {
+      "risk_tags": [
+        "SESSION_OK",
+        "ONE_SOURCE_MANY_DESTINATIONS"
+      ]
+    },
+    "expected": "REC-NET-001"
+  },
+  {
+    "name": "excessive_tls",
+    "finding": {
+      "risk_tags": [
+        "HIGH_TLS_CONNECTION_RATE"
+      ]
+    },
+    "expected": "REC-NET-002"
+  },
+  {
+    "name": "generic_udp_unmatched",
+    "finding": {
+      "finding_name": "UDP 검토 후보",
+      "protocol": "UDP"
+    },
+    "expected": null
+  },
+  {
+    "name": "generic_ssl_unmatched",
+    "finding": {
+      "finding_name": "SSL 검토 후보",
+      "protocol": "SSL"
+    },
+    "expected": null
+  }
+]

@@ -1,0 +1,187 @@
+{
+  "rule_version": "1.0.0",
+  "normalization": {
+    "remove_trailing_candidate_word": true,
+    "case_insensitive_protocol": true,
+    "trim_whitespace": true
+  },
+  "rules": [
+    {
+      "rule_id": "RULE-SYSLOG-EXTERNAL",
+      "priority": 1000,
+      "when": {
+        "finding_name_in": [
+          "SYSLOG 외부 전송",
+          "SYSLOG 외부 전송/Attempt"
+        ]
+      },
+      "recommendation_id": "REC-ADM-008"
+    },
+    {
+      "rule_id": "RULE-SNMP-EXTERNAL-TRAP",
+      "priority": 990,
+      "when": {
+        "finding_name_in": [
+          "SNMP 외부 Trap/관리 통신"
+        ]
+      },
+      "recommendation_id": "REC-ADM-006"
+    },
+    {
+      "rule_id": "RULE-SMBV1",
+      "priority": 980,
+      "when": {
+        "finding_name_in": [
+          "SMBv1/TCP445 통신"
+        ]
+      },
+      "recommendation_id": "REC-CRY-004"
+    },
+    {
+      "rule_id": "RULE-TELNET",
+      "priority": 970,
+      "when": {
+        "finding_name_in": [
+          "Telnet 평문 원격접속"
+        ]
+      },
+      "recommendation_id": "REC-ADM-005"
+    },
+    {
+      "rule_id": "RULE-TLS10",
+      "priority": 960,
+      "when": {
+        "finding_name_in": [
+          "TLS 1.0 사용"
+        ]
+      },
+      "recommendation_id": "REC-CRY-001"
+    },
+    {
+      "rule_id": "RULE-TACACS-EXTERNAL",
+      "priority": 950,
+      "when": {
+        "finding_name_in": [
+          "외부 TACACS 인증 통신"
+        ]
+      },
+      "recommendation_id": "REC-ADM-004"
+    },
+    {
+      "rule_id": "RULE-CAPWAP-DISCOVERY",
+      "priority": 940,
+      "when": {
+        "finding_name_in": [
+          "CAPWAP Control Discovery Attempt"
+        ]
+      },
+      "recommendation_id": "REC-DISC-005"
+    },
+    {
+      "rule_id": "RULE-EXTERNAL-DESTINATION",
+      "priority": 900,
+      "when": {
+        "finding_name_in": [
+          "외부 목적지 통신"
+        ]
+      },
+      "recommendation_id": "REC-EXT-001"
+    },
+    {
+      "rule_id": "RULE-WSD",
+      "priority": 880,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "WSD 검토",
+              "WS-Discovery 통신"
+            ]
+          },
+          {
+            "protocol_in": [
+              "WSD",
+              "WS-DISCOVERY"
+            ],
+            "destination_port_in": [
+              3702
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-DISC-002"
+    },
+    {
+      "rule_id": "RULE-HTTP-SSDP",
+      "priority": 870,
+      "when": {
+        "all": [
+          {
+            "finding_name_in": [
+              "HTTP 검토",
+              "SSDP 검토"
+            ]
+          },
+          {
+            "destination_port_in": [
+              1900
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-DISC-001"
+    },
+    {
+      "rule_id": "RULE-SNMP-EXTERNAL-SOURCE",
+      "priority": 860,
+      "when": {
+        "all": [
+          {
+            "finding_name_in": [
+              "SNMP 검토"
+            ]
+          },
+          {
+            "source_zone_in": [
+              "EXTERNAL"
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-ADM-007"
+    },
+    {
+      "rule_id": "RULE-MODBUS",
+      "priority": 850,
+      "when": {
+        "protocol_in": [
+          "MODBUS",
+          "MODBUS/TCP"
+        ],
+        "destination_port_in": [
+          502
+        ]
+      },
+      "recommendation_id": "REC-ICS-001"
+    },
+    {
+      "rule_id": "RULE-S7COMM",
+      "priority": 840,
+      "when": {
+        "protocol_in": [
+          "S7COMM",
+          "S7"
+        ],
+        "destination_port_in": [
+          102
+        ]
+      },
+      "recommendation_id": "REC-ICS-002"
+    }
+  ],
+  "fallback": {
+    "match_status": "unmatched",
+    "manual_review_required": true,
+    "recommendation_id": null
+  }
+}

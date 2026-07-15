@@ -1,0 +1,563 @@
+{
+  "schema_version": "1.1.0",
+  "rule_version": "1.1.0",
+  "input_contract": {
+    "required_any": [
+      "finding_name",
+      "protocol",
+      "destination_port",
+      "risk_tags"
+    ],
+    "optional_fields": [
+      "source_zone",
+      "destination_zone",
+      "source_port",
+      "session_state"
+    ],
+    "port_type": "integer_or_numeric_string",
+    "risk_tags_type": "array_of_strings"
+  },
+  "normalization": {
+    "unicode_form": "NFKC",
+    "trim_whitespace": true,
+    "collapse_internal_whitespace": true,
+    "remove_trailing_candidate_word": true,
+    "trailing_candidate_words": [
+      "후보"
+    ],
+    "case_insensitive_finding_name": true,
+    "case_insensitive_protocol": true,
+    "case_insensitive_zone": true,
+    "protocol_aliases": {
+      "WS-DISCOVERY": "WSD",
+      "WS_DISCOVERY": "WSD",
+      "UPNP": "SSDP",
+      "M-DNS": "MDNS",
+      "MODBUS-TCP": "MODBUS/TCP"
+    }
+  },
+  "evaluation_policy": {
+    "sort_by": [
+      "priority_desc",
+      "file_order"
+    ],
+    "first_match_wins": true,
+    "skip_disabled_rules": true,
+    "catalog_search_metadata_used_for_match": false,
+    "ambiguous_generic_findings": [
+      "UDP 검토",
+      "HTTP 검토",
+      "SSL 검토",
+      "Attempt 상태 통신"
+    ],
+    "ambiguous_generic_findings_action": "do_not_match_without_additional_rule_evidence"
+  },
+  "supported_operators": [
+    "finding_name_in",
+    "protocol_in",
+    "destination_port_in",
+    "source_port_in",
+    "source_zone_in",
+    "destination_zone_in",
+    "session_state_in",
+    "risk_tags_any",
+    "all",
+    "any"
+  ],
+  "rules": [
+    {
+      "rule_id": "RULE-SYSLOG-EXTERNAL",
+      "priority": 1000,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "SYSLOG 외부 전송",
+          "SYSLOG 외부 전송/Attempt",
+          "외부 Syslog 송신"
+        ]
+      },
+      "recommendation_id": "REC-ADM-008"
+    },
+    {
+      "rule_id": "RULE-SNMP-EXTERNAL-TRAP",
+      "priority": 990,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "SNMP 외부 Trap/관리 통신",
+          "SNMP 외부 Trap",
+          "외부 Trap 송신"
+        ]
+      },
+      "recommendation_id": "REC-ADM-006"
+    },
+    {
+      "rule_id": "RULE-SNMP-EXTERNAL-SOURCE",
+      "priority": 985,
+      "enabled": true,
+      "when": {
+        "all": [
+          {
+            "finding_name_in": [
+              "SNMP 검토",
+              "외부 SNMP 접근",
+              "SNMP inbound",
+              "SNMP 관리 접근"
+            ]
+          },
+          {
+            "source_zone_in": [
+              "EXTERNAL",
+              "DMZ",
+              "UNTRUSTED"
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-ADM-007"
+    },
+    {
+      "rule_id": "RULE-SMBV1",
+      "priority": 980,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "SMBv1/TCP445 통신",
+          "SMBv1 사용",
+          "SMB1Protocol 활성화"
+        ]
+      },
+      "recommendation_id": "REC-CRY-004"
+    },
+    {
+      "rule_id": "RULE-TELNET",
+      "priority": 975,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "Telnet 평문 원격접속",
+              "Telnet 사용",
+              "평문 원격접속"
+            ]
+          },
+          {
+            "all": [
+              {
+                "protocol_in": [
+                  "TELNET"
+                ]
+              },
+              {
+                "destination_port_in": [
+                  23
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-ADM-005"
+    },
+    {
+      "rule_id": "RULE-TLS10",
+      "priority": 970,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "TLS 1.0 사용",
+          "TLS 1.1 사용",
+          "Legacy TLS",
+          "약한 SSL/TLS 설정"
+        ]
+      },
+      "recommendation_id": "REC-CRY-001"
+    },
+    {
+      "rule_id": "RULE-TACACS-EXTERNAL",
+      "priority": 965,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "외부 TACACS 인증 통신",
+          "외부 TACACS 인증",
+          "TACACS 외부 통신"
+        ]
+      },
+      "recommendation_id": "REC-ADM-004"
+    },
+    {
+      "rule_id": "RULE-VENDOR-DISCOVERY",
+      "priority": 960,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "CAPWAP Control Discovery Attempt",
+              "SENTINEL-SRM 검토",
+              "HONEYWELL-DSA-DIS 검토",
+              "벤더 Discovery 통신"
+            ]
+          },
+          {
+            "protocol_in": [
+              "CAPWAP-CONTROL",
+              "SENTINEL-SRM",
+              "HONEYWELL-DSA-DIS"
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-DISC-005"
+    },
+    {
+      "rule_id": "RULE-PLC-WRITE",
+      "priority": 955,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "Data Acquisition Write",
+          "PLC Write",
+          "PLC 프로그램 변경",
+          "PLC 쓰기 행위",
+          "온라인 프로그램 변경"
+        ]
+      },
+      "recommendation_id": "REC-ICS-003"
+    },
+    {
+      "rule_id": "RULE-FTP-PLAINTEXT",
+      "priority": 950,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "FTP 평문 파일 전송",
+              "평문 파일 전송",
+              "FTP 검토",
+              "FTP 통신"
+            ]
+          },
+          {
+            "all": [
+              {
+                "protocol_in": [
+                  "FTP"
+                ]
+              },
+              {
+                "destination_port_in": [
+                  21
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-CRY-002"
+    },
+    {
+      "rule_id": "RULE-SNMP-LEGACY",
+      "priority": 945,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "SNMPv1 사용",
+          "SNMPv2c 사용",
+          "SNMP public community",
+          "SNMP 취약 프로토콜",
+          "Unsecured SNMP"
+        ]
+      },
+      "recommendation_id": "REC-CRY-003"
+    },
+    {
+      "rule_id": "RULE-EXTERNAL-DESTINATION",
+      "priority": 940,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "외부 목적지 통신",
+          "Talking with External IPs",
+          "비인가 아웃바운드",
+          "인터넷 직접 통신"
+        ]
+      },
+      "recommendation_id": "REC-EXT-001"
+    },
+    {
+      "rule_id": "RULE-WSD",
+      "priority": 930,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "WSD 검토",
+              "WS-Discovery 통신"
+            ]
+          },
+          {
+            "all": [
+              {
+                "protocol_in": [
+                  "WSD",
+                  "WS-DISCOVERY"
+                ]
+              },
+              {
+                "destination_port_in": [
+                  3702
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-DISC-002"
+    },
+    {
+      "rule_id": "RULE-SSDP",
+      "priority": 925,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "HTTP M-SEARCH",
+              "SSDP 검토",
+              "UPnP 검토"
+            ]
+          },
+          {
+            "all": [
+              {
+                "protocol_in": [
+                  "SSDP",
+                  "UPNP",
+                  "HTTP M-SEARCH"
+                ]
+              },
+              {
+                "destination_port_in": [
+                  1900
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-DISC-001"
+    },
+    {
+      "rule_id": "RULE-MDNS",
+      "priority": 920,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "MDNS 검토",
+              "mDNS 통신",
+              "mDNS 서비스 탐색"
+            ]
+          },
+          {
+            "all": [
+              {
+                "protocol_in": [
+                  "MDNS",
+                  "M-DNS"
+                ]
+              },
+              {
+                "destination_port_in": [
+                  5353
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-DISC-003"
+    },
+    {
+      "rule_id": "RULE-DHCPV6",
+      "priority": 915,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "DHCPV6 검토",
+              "DHCPv6 통신",
+              "IPv6 자동 구성 통신"
+            ]
+          },
+          {
+            "all": [
+              {
+                "protocol_in": [
+                  "DHCPV6",
+                  "DHCPV6-CLIENT",
+                  "DHCPV6-SERVER"
+                ]
+              },
+              {
+                "destination_port_in": [
+                  546,
+                  547
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-DISC-004"
+    },
+    {
+      "rule_id": "RULE-MODBUS",
+      "priority": 910,
+      "enabled": true,
+      "when": {
+        "all": [
+          {
+            "protocol_in": [
+              "MODBUS",
+              "MODBUS/TCP"
+            ]
+          },
+          {
+            "destination_port_in": [
+              502
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-ICS-001"
+    },
+    {
+      "rule_id": "RULE-S7COMM",
+      "priority": 905,
+      "enabled": true,
+      "when": {
+        "all": [
+          {
+            "protocol_in": [
+              "S7COMM",
+              "S7"
+            ]
+          },
+          {
+            "destination_port_in": [
+              102
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-ICS-002"
+    },
+    {
+      "rule_id": "RULE-SMB-SHARE-ACCESS",
+      "priority": 900,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "Assets Accessed SMB shares",
+          "SMB Pipes",
+          "SMB 공유 접근",
+          "민감 Named Pipe 접근"
+        ]
+      },
+      "recommendation_id": "REC-ADM-001"
+    },
+    {
+      "rule_id": "RULE-REMOTE-MANAGEMENT",
+      "priority": 895,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "Clients remotely managed",
+          "직접 RDP 접속",
+          "직접 SSH 접속",
+          "제3자 원격 유지보수",
+          "비승인 원격관리"
+        ]
+      },
+      "recommendation_id": "REC-ADM-002"
+    },
+    {
+      "rule_id": "RULE-INBOUND-SERVICE",
+      "priority": 890,
+      "enabled": true,
+      "when": {
+        "finding_name_in": [
+          "TDS 검토",
+          "DB 인바운드 접근",
+          "Syslog 인바운드",
+          "SIP 인바운드",
+          "비승인 Source 서비스 접근"
+        ]
+      },
+      "recommendation_id": "REC-ADM-003"
+    },
+    {
+      "rule_id": "RULE-HIGHLY-CONNECTED-ASSET",
+      "priority": 885,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "Highly Connected Assets",
+              "다중 연결 자산",
+              "동일 Source 다수 Destination",
+              "다수 목적지 접근"
+            ]
+          },
+          {
+            "risk_tags_any": [
+              "ONE_SOURCE_MANY_DESTINATIONS",
+              "HIGHLY_CONNECTED_ASSET"
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-NET-001"
+    },
+    {
+      "rule_id": "RULE-EXCESSIVE-TLS-CONNECTIONS",
+      "priority": 880,
+      "enabled": true,
+      "when": {
+        "any": [
+          {
+            "finding_name_in": [
+              "과다 SSL/TLS 연결",
+              "비정상 SSL 연결률",
+              "SSL 반복 연결",
+              "TLS 연결 과다"
+            ]
+          },
+          {
+            "risk_tags_any": [
+              "EXCESSIVE_TLS_CONNECTIONS",
+              "HIGH_TLS_CONNECTION_RATE"
+            ]
+          }
+        ]
+      },
+      "recommendation_id": "REC-NET-002"
+    }
+  ],
+  "fallback": {
+    "match_status": "unmatched",
+    "manual_review_required": true,
+    "recommendation_id": null,
+    "allow_generated_recommendation": false,
+    "reason": "No deterministic rule matched; do not synthesize an unsupported recommendation."
+  }
+}
